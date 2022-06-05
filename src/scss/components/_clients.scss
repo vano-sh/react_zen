@@ -1,0 +1,30 @@
+/* clients.scss */
+
+.clients {
+  &__wrapper {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    gap: 30px 30px;
+    padding: 10px 15px;
+    margin: 0 auto;
+
+    @media (min-width: $breakpoint_md) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      max-width: $max_width_md;
+    }
+
+    @media (min-width: $breakpoint_lg) {
+      max-width: $max_width_lg;
+    }
+
+    @media (min-width: $breakpoint_xl) {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      max-width: $max_width_xl;
+    }
+  }
+}

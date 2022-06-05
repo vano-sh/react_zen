@@ -1,0 +1,46 @@
+/* _global.scss*/
+
+body {
+  position: relative;
+  font-family: $font_family;
+  font-size: 14px;
+  font-weight: 400;
+  padding-top: $height_header_xs;
+  background: #fff;
+  color: #000;
+  fill: #000;
+
+  &.dark {
+    background: #333;
+    color: #fff;
+    fill: #fff;
+  }
+
+  &.hidden {
+    overflow: hidden;
+  }
+
+  @media (min-width: $breakpoint_lg) {
+    padding-top: $height_header_lg;
+  }
+}
+
+.wrapper {
+  padding: 0 15px;
+
+  @media (min-width: $breakpoint_md) {
+    padding: 0 40px;
+  }
+
+  @media (min-width: $breakpoint_lg) {
+    padding: 0 110px;
+  }
+
+  @media (min-width: $breakpoint_xl) {
+    padding: 0 165px;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

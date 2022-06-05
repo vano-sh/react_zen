@@ -1,0 +1,39 @@
+/* preloader.scss */
+
+.preloader {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $z-index_preloader;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  fill: #000;
+
+  svg {
+    animation: bounceIn 1s infinite;
+  }
+
+  &.dark {
+    fill: #fff;
+    background: #000;
+  }
+
+  @keyframes bounceIn {
+
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.3)
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+}

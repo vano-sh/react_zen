@@ -1,0 +1,95 @@
+/* _footer.scss*/
+
+.footer {
+  background: #484848;
+
+
+  &__wrapper {
+    color: #fff;
+    padding: 30px 15px;
+
+    @media (min-width: $breakpoint_md) {
+      max-width: $max_width_md;
+      margin: 0 auto;
+    }
+
+    @media (min-width: $breakpoint_lg) {
+      max-width: $max_width_lg;
+      padding-top: 40px 0;
+    }
+  }
+
+  &__columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px 30px;
+
+    @media (min-width: $breakpoint_md) {
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    @media (min-width: $breakpoint_lg) {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  &__item {
+    margin-top: 10px;
+
+    img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+
+    @media (min-width: $breakpoint_md) {
+      justify-content: space-between;
+      flex-wrap: nowrap;
+    }
+  }
+
+  &__copies {
+    font-size: 12px;
+
+    @media (min-width: $breakpoint_md) {
+      width: 80%;
+      font-size: 14px;
+    }
+
+    @media (min-width: $breakpoint_lg) {
+      width: 85%;
+      font-size: 16px;
+    }
+
+    @media (min-width: $breakpoint_lg) {
+      width: 70%;
+      font-size: 16px;
+    }
+  }
+
+  &__copy {
+    margin-top: 10px;
+  }
+
+  &__copyright {
+    display: block;
+    margin-top: 10px;
+
+    @media (min-width: $breakpoint_md) {
+      margin-left: 30px;
+      align-self: baseline;
+    }
+  }
+}

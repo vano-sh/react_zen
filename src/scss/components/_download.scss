@@ -1,0 +1,111 @@
+/* _download.scss */
+
+.download {
+  &__wrapper {
+    padding: 0 15px;
+    margin: 30px auto;
+
+    @media (min-width: $breakpoint_md) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: $max_width_md;
+      margin: 0 auto;
+      padding-top: 40px 0;
+    }
+
+    @media (min-width: $breakpoint_lg) {
+      margin: 40px auto;
+      max-width: $max_width_lg;
+    }
+
+    @media (min-width: $breakpoint_xl) {
+      margin: 50px auto;
+      max-width: $max_width_xl;
+    }
+  }
+
+  &__body {
+    @media (min-width: $breakpoint_md) {
+      width: 50%;
+    }
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 30px;
+
+    @media (min-width: $breakpoint_lg) {
+      font-size: 42px;
+    }
+
+    @media (min-width: $breakpoint_xl) {
+      font-size: 56px;
+    }
+  }
+
+  &__copy {
+    margin-top: 20px;
+
+    @media (min-width: $breakpoint_lg) {
+      font-size: 18px;
+    }
+
+    @media (min-width: $breakpoint_xl) {
+      margin-top: 30px;
+      font-size: 20px;
+    }
+  }
+
+  &__links {
+    margin-top: 20px;
+
+    @media (min-width: $breakpoint_md) {
+      display: flex;
+    }
+  }
+
+  &__link {
+    display: block;
+    height: 44px;
+    margin-top: 15px;
+
+    @media (min-width: $breakpoint_md) {
+      &:last-of-type {
+        margin-left: 20px;
+      }
+    }
+  }
+
+  &__image {
+    display: flex;
+    margin-top: 30px;
+    overflow: hidden;
+    border: 1px solid #aaa;
+    border-radius: 20px;
+
+    img {
+      object-fit: cover;
+      transition: all 0.5s;
+    }
+
+    @media (min-width: $breakpoint_md) {
+      width: 50%;
+      margin-top: 0;
+      margin-left: 30px;
+
+      img:hover {
+        transform: scale(1.1);
+        transition: all 0.5s;
+      }
+    }
+
+    @media (min-width: $breakpoint_lg) {
+      margin-left: 40px;
+    }
+
+    @media (min-width: $breakpoint_lg) {
+      margin-left: 110px;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+/* _vars.scss*/
+
+// font
+$font_family: 'Nunito',
+sans-serif;
+
+// breakpoints
+$breakpoint_md: 768px;
+$breakpoint_lg: 1152px;
+$breakpoint_xl: 1440px;
+
+// max_width
+$max_width_md: 690px;
+$max_width_lg: 930px;
+$max_width_xl: 1110px;
+
+// heights
+$height_header_xs: 50px;
+$height_header_lg: 80px;
+
+//z-index
+$z-index_header: 1;
+$z-index_progress-bar: 2;
+$z-index_menu: 3;
+$z-index_modal: 4;
+$z-index_preloader: 5;
+
+//colors
+$color_general: #fff;
+  
