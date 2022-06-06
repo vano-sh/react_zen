@@ -3,7 +3,6 @@ import Title from '../../components/Title'
 import Form from './components/Form'
 
 const Modal = ({
-  className, 
   data: {
     title,
     form
@@ -11,6 +10,8 @@ const Modal = ({
   isModalActive,
   onModalCloseClick
 }) => {
+  const className = 'modal'
+
   return (
     <div 
       className={isModalActive

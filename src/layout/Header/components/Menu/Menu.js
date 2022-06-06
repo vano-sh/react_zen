@@ -4,11 +4,6 @@ const Menu = ({
   className,
   menuItems,
   isBurgerActive,
-  refDownload,
-  refWarranty,
-  refCare,
-  refCashback,
-  refClients,
   onScrollToSectionClick
 }) => {
 
@@ -25,11 +20,6 @@ const Menu = ({
             key={item.target}
             className={className} 
             item={item}
-            refDownload={refDownload}
-            refWarranty={refWarranty}
-            refCare={refCare}
-            refCashback={refCashback}
-            refClients={refClients}
             onScrollToSectionClick={onScrollToSectionClick}
           />
       )} 

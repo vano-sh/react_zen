@@ -1,17 +1,19 @@
 import Column from './components/Column'
 import Info from './components/Info'
 
-const Footer = ({className, data}) => {
-  const {
+const Footer = ({
+  data: {
     columns,
     info
-  } = data
+  }
+}) => {
+  const className='footer'
 
   return (
     <footer className={className}>
       <div className={`${className}__wrapper`}>
         <div className={`${className}__columns`}>
-          {columns.length && (
+          {columns.length > 0 && (
             columns.map(column => 
               <Column
                 className={className}

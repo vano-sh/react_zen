@@ -18,9 +18,10 @@ const App = () => {
     return localStorage.getItem('isDarkTheme') === 'true'
   })
   const [isBurgerActive, setIsBurgerActive] = useState(false)
-  const [targetSectionScrolling, setTargetSectionScrolling] = useState('')
-  const [isModalActive, setIsModalActive] = useState(false)
+  const [targetSectionScrolling, setTargetSectionScrolling] = useState(0)
+  const [isModalActive, setIsModalActive] = useState(true)
 
+  const refHeader = useRef(null)
   const refDownload = useRef(null)
   const refWarranty = useRef(null)
   const refCare = useRef(null)
@@ -40,7 +41,7 @@ const App = () => {
 
   useEffect(() => {
     if (Object.values(data).length) {
-      const timerId = setTimeout(() => {
+        const timerId = setTimeout(() => {
         setIsLoading(false)     
       }, 1000);
 
@@ -69,10 +70,10 @@ const App = () => {
   }, [isDarkTheme])  
 
   useEffect(() => {
-    
-  }, [isBurgerActive])
-
-  useEffect(() => {
+    window.scrollTo({
+      top: targetSectionScrolling,                   //elementRef.current.offsetTop,
+      behavior: 'smooth'
+    })
   }, [targetSectionScrolling])
 
   useEffect(() => {
@@ -95,12 +96,39 @@ const App = () => {
     setIsBurgerActive(!isBurgerActive)
   }
 
-  const handleScrollToSectionClick = (elementRef) => {
-    window.scrollTo({
-      top: elementRef.current.offsetTop,
-      behavior: 'smooth'
-    })
-    setIsBurgerActive(true)
+  const handleScrollToSectionClick = (targetName) => {
+    const headerHeight = refHeader.current.clientHeight
+    setIsBurgerActive(false)
+
+    switch (targetName) {
+      case 'download':
+        return (
+          setTargetSectionScrolling(
+            refDownload.current.offsetTop - headerHeight))
+
+      case 'warranty':
+        return (
+          setTargetSectionScrolling(
+            refWarranty.current.offsetTop - headerHeight))    
+
+      case 'care':
+        return (
+          setTargetSectionScrolling(
+            refCare.current.offsetTop - headerHeight))    
+
+      case 'cashback':
+        return (
+          setTargetSectionScrolling(
+            refCashback.current.offsetTop - headerHeight)) 
+
+      case 'clients':
+        return (
+          setTargetSectionScrolling(
+            refClients.current.offsetTop - headerHeight))    
+
+      default:
+        return setTargetSectionScrolling(0)
+    }
   }
 
   const handleModalButtonActiveClick = () => {
@@ -122,11 +150,7 @@ const App = () => {
           data={data.header}
           isDarkTheme={isDarkTheme}
           isBurgerActive={isBurgerActive}
-          refDownload={refDownload}
-          refWarranty={refWarranty}
-          refCare={refCare}
-          refCashback={refCashback}
-          refClients={refClients}
+          refHeader={refHeader}
           onLogoClick={handleLogoScrollClick}
           onThemeClick={handleThemeChangeClick}
           onBurgerClick={handleBurgerActiveClick}
@@ -173,14 +197,12 @@ const App = () => {
 
       {data.footer && (
         <Footer
-          className='footer'
           data={data.footer}
         />
       )}
 
       {data.modal && (
         <Modal
-          className='modal'
           data={data.modal}
           isModalActive={isModalActive}
           onModalCloseClick={handleModalCloseClick}

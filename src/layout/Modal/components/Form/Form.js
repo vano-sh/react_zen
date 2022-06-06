@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import { API_BASE_URL } from '../../../../constans/api'
 import Input from '../Input'
 
-const Form = ({className, form}) => {
-  const {
+const Form = ({
+  className, 
+  form: {
     fields, 
     connection: {
       label,
@@ -17,42 +18,53 @@ const Form = ({className, form}) => {
       }
     }, 
     buttonText
-  } = form
+  }
+}) => {
+  const [name, setName] = useState('')  
+  const [tel, setTel] = useState('')  
+  const [email, setEmail] = useState('')  
+  const [connection, setConnection] = useState('')  
+  const [isPolicy, setIsPolicy] = useState(true)  
 
-  const [order, setOrder] = useState({
-    name: '',
-    tel: '',
-    email: '',
-    connection: '',
-    isPolicy: true
-  })
-  const [isValid, setIsValid] = useState(false)
+  useEffect(() => {
+    
+  }, [name])
 
-  const handleOnChange = (event) => {
-    const {
-      name, 
-      value, 
-      type, 
-      checked
-    } = event.target
+  useEffect(() => {
+    
+  }, [tel])
 
-    type === 'checkbox' 
-    ? setOrder({
-      ...order,
-      [name]: checked
-    })
-    : setOrder({
-      ...order,
-      [name]: value,
-      data: new Date().toLocaleString(),
-      type: 'order'
-    })
-  }  
+  useEffect(() => {
+    
+  }, [email])
+
+  useEffect(() => {
+    
+  }, [connection])
+  
+  useEffect(() => {
+    
+  }, [isPolicy])
+
+  const handleNameOnChange = (event) => {
+    setName(event.target.value)
+  }
+  const handleTelOnChange = (event) => {
+    setTel(event.target.value)
+  }
+  const handleEmailOnChange = (event) => {
+    setEmail(event.target.value)
+  }
+  const handleConnectionOnChange = (event) => {
+    setConnection(event.target.value)
+  }
+  const handlePolicyOnChange = (event) => {
+    setIsPolicy(event.target.checked)
+  }
+
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
-
-    console.log({order})
 
     // fetch(`${API_BASE_URL}/orders/.json`, {
     //   method: 'POST',
@@ -60,35 +72,52 @@ const Form = ({className, form}) => {
     // })
     //   .catch(error => console.error(error))
   }
-
   
   return (
     <form 
       className={`${className}__form`} 
       onSubmit={handleFormSubmit}
     >      
-      {fields.length && (
-        fields.map(field => 
-          <Input 
-            className={className} 
-            field={field}
-            key={field.type}
-            order={order}
-            handleOnChange={handleOnChange}
-          />
-        )
+      {fields.length > 0 && (
+        fields.map(field => {
+          if (field.type === 'text') {
+            return (
+              <Input 
+                className={className} 
+                field={field}
+                key={field.type}
+                value={name}
+                handleOnChange={handleNameOnChange}
+              />
+          )} else if (field.type === 'tel') {
+            return (
+              <Input 
+                className={className} 
+                field={field}
+                key={field.type}
+                value={tel}
+                handleOnChange={handleTelOnChange}
+              />
+          )} else {
+            return (
+              <Input 
+                className={className} 
+                field={field}
+                key={field.type}
+                value={email}
+                handleOnChange={handleEmailOnChange}
+              />
+          )}
+        })
       )}
+
       <label 
-        className={order.connection
-          ? `${className}__select success`
-          : `${className}__select error`
-        }
+        className={`${className}__select`}
       >
         <span>{label}</span>          
         <select
-          name='connection'
-          value={order.connection}
-          onChange={handleOnChange}
+          value={connection}
+          onChange={handleConnectionOnChange}
         >
           <option></option>
           {options.length && (
@@ -103,21 +132,24 @@ const Form = ({className, form}) => {
           )}
         </select>
       </label>    
-      <label className={`${className}__policy`}>
+
+      <label 
+        className={`${className}__policy`}
+      >
         <input 
           type={checkbox.type} 
-          name='isPolicy'
-          checked={order.isPolicy}
-          onChange={handleOnChange}
+          checked={isPolicy}
+          onChange={handlePolicyOnChange}
         />
         <a href={url}>
           {data}
         </a>
       </label>
+
       <button 
         className={`${className}__btn`} 
         type='submit'
-        disabled={isValid ? 'enable' : 'disabled'} 
+        disabled
       >
         <span>
           {buttonText ? buttonText : 'Submit'}
@@ -128,22 +160,3 @@ const Form = ({className, form}) => {
 }
 
 export default Form
-
-/*
-name === 'connection'
-    ? setIsValid({
-        ...isValid,
-        [`${name}Valid`]: value ? true : false
-      })
-    : setIsValid({
-        ...isValid,
-        [`${name}Valid`]: validate
-      })  
-
-const [isValid, setIsValid] = useState({
-    nameValid: false,
-    telValid: false,
-    emailValid: false,
-    connectionValid: false
-  })
-*/

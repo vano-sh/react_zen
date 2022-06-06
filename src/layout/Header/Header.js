@@ -7,11 +7,7 @@ const Header = ({
   data, 
   isDarkTheme, 
   isBurgerActive,
-  refDownload,
-  refWarranty,
-  refCare,
-  refCashback,
-  refClients,
+  refHeader,
   onLogoClick, 
   onThemeClick, 
   onBurgerClick, 
@@ -30,7 +26,8 @@ const Header = ({
       className={isDarkTheme 
         ? `${className} dark`
         : className  
-      } 
+      }
+      ref={refHeader} 
     >
       <div className={`${className}__wrapper`}>
         <nav className={`${className}__nav`}>
@@ -44,11 +41,6 @@ const Header = ({
             className={className} 
             menuItems={menuItems}
             isBurgerActive={isBurgerActive}
-            refDownload={refDownload}
-            refWarranty={refWarranty}
-            refCare={refCare}
-            refCashback={refCashback}
-            refClients={refClients}
             onScrollToSectionClick={onScrollToSectionClick}              
             />
         </nav>

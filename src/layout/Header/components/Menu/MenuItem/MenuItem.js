@@ -1,17 +1,12 @@
 const MenuItem = ({
   className, 
   item,
-  refDownload,
-  refWarranty,
-  refCare,
-  refCashback,
-  refClients,
   onScrollToSectionClick
 }) => {
   return (
     <li className={`${className}__item`}>
       <button
-        onClick={() => onScrollToSectionClick(refCashback)}
+        onClick={() => onScrollToSectionClick(item.target)}
       >
         <span>{item.data}</span>
       </button>
