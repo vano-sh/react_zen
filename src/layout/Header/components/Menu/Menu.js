@@ -1,13 +1,15 @@
+import { useContext } from 'react'
+import { AppContext } from '../../../../AppContext'
 import MenuItem from './MenuItem'
 
 const Menu = ({
   className,
   menuItems,
-  isBurgerActive,
   onScrollToSectionClick
 }) => {
-
   const currentClassName = `${className}__menu`
+
+  const {isBurgerActive} = useContext(AppContext)
 
   return (
     <ul className={isBurgerActive 
@@ -20,7 +22,7 @@ const Menu = ({
             key={item.target}
             className={className} 
             item={item}
-            onScrollToSectionClick={onScrollToSectionClick}
+            onScrollToSectionClick={onScrollToSectionClick} //?!
           />
       )} 
     </ul>

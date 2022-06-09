@@ -1,10 +1,19 @@
-const Burger = ({
-  className, 
-  isBurgerActive,
-  onBurgerClick
-}) => {
+import { useContext } from "react"
+import { AppContext } from "../../../../AppContext"
 
+const Burger = ({
+  className,
+}) => {
   const currentClassName = `${className}__burger`
+  
+  const {
+    isBurgerActive, 
+    setIsBurgerActive
+  } = useContext(AppContext)
+
+  const handleBurgerActiveClick = () => {
+    setIsBurgerActive(!isBurgerActive)
+  }
 
   return (
     <button
@@ -12,7 +21,7 @@ const Burger = ({
         ? `${currentClassName} active`
         : currentClassName
       }
-      onClick={onBurgerClick}
+      onClick={handleBurgerActiveClick}
     >
       <span></span>
     </button>

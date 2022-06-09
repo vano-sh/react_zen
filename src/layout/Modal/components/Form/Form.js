@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-// import { API_BASE_URL } from '../../../../constans/api'
+import { useEffect, useRef, useState } from 'react'
+import { API_BASE_URL } from '../../../../constans/api'
+import useFetch from '../../../../hooks/useFetch'
 import Input from '../Input'
 
 const Form = ({
@@ -18,33 +19,22 @@ const Form = ({
       }
     }, 
     buttonText
-  }
-}) => {
+  },
+  onTitleChange
+}) => {  
   const [name, setName] = useState('')  
   const [tel, setTel] = useState('')  
   const [email, setEmail] = useState('')  
   const [connection, setConnection] = useState('')  
-  const [isPolicy, setIsPolicy] = useState(true)  
-
-  useEffect(() => {
-    
-  }, [name])
-
-  useEffect(() => {
-    
-  }, [tel])
-
-  useEffect(() => {
-    
-  }, [email])
-
-  useEffect(() => {
-    
-  }, [connection])
+  const [isPolicy, setIsPolicy] = useState(true)
   
+  const refInputName = useRef()
+
+  const {postData} = useFetch(API_BASE_URL)
+
   useEffect(() => {
-    
-  }, [isPolicy])
+    refInputName.current.focus()
+  }, [])
 
   const handleNameOnChange = (event) => {
     setName(event.target.value)
@@ -62,15 +52,71 @@ const Form = ({
     setIsPolicy(event.target.checked)
   }
 
+  const validateName = (value) => {
+    if (value.length >= 2 
+      && value.search(/[^a-z]+/gi) === -1) {
+      return 'success'     
+    } else if (value.length === 0 ) {
+      return ''
+    } else {
+      return 'error'
+    }
+  }
+  const validateTel = (value) => {
+    if (value.length >= 10
+      && value.search(/[^0-9]+/gi) === -1) {
+      return 'success'     
+    } else if (value.length === 0 ) {
+      return ''
+    } else {
+      return 'error'
+    }
+  }
+  const validateEmail = (value) => {
+    if (value.length >= 9 
+      && value.search(/[a-z0-9\.]+@[a-z]{4,6}\.(ru|com|by)/gi) !== -1) {
+      return 'success'     
+    } else if (value.length === 0 ) {
+      return ''
+    } else {
+      return 'error'
+    }
+  }
+  const validateForm = () => {
+    if (
+      validateName(name) === 'success' &&
+      validateTel(tel) === 'success' &&
+      validateEmail(email) === 'success' &&
+      connection && isPolicy
+    ) {
+      return false
+    }
+    return true    
+  }
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
 
-    // fetch(`${API_BASE_URL}/orders/.json`, {
-    //   method: 'POST',
-    //   body: JSON.stringify(order)
-    // })
-    //   .catch(error => console.error(error))
+    const order = {
+      name,
+      tel,
+      email,
+      connection,
+      isPolicy,
+      type: 'order',
+      date: new Date().toLocaleString(),
+    }
+
+    console.log(order)
+
+    postData(`en/order.json`, order)
+      .catch(error => console.error(error))  
+    
+    onTitleChange()
+    setName('')
+    setTel('')
+    setEmail('')
+    setConnection('')
   }
   
   return (
@@ -82,17 +128,18 @@ const Form = ({
         fields.map(field => {
           if (field.type === 'text') {
             return (
-              <Input 
-                className={className} 
+              <Input
+                className={`${className}__input ${validateName(name)}`} 
                 field={field}
                 key={field.type}
+                refInputName={refInputName} 
                 value={name}
                 handleOnChange={handleNameOnChange}
               />
           )} else if (field.type === 'tel') {
             return (
               <Input 
-                className={className} 
+                className={`${className}__input ${validateTel(tel)}`} 
                 field={field}
                 key={field.type}
                 value={tel}
@@ -101,7 +148,7 @@ const Form = ({
           )} else {
             return (
               <Input 
-                className={className} 
+                className={`${className}__input ${validateEmail(email)}`} 
                 field={field}
                 key={field.type}
                 value={email}
@@ -112,7 +159,10 @@ const Form = ({
       )}
 
       <label 
-        className={`${className}__select`}
+        className={connection 
+          ? `${className}__select success`
+          : `${className}__select`
+        } 
       >
         <span>{label}</span>          
         <select
@@ -149,7 +199,7 @@ const Form = ({
       <button 
         className={`${className}__btn`} 
         type='submit'
-        disabled
+        disabled={validateForm()}
       >
         <span>
           {buttonText ? buttonText : 'Submit'}

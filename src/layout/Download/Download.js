@@ -1,6 +1,6 @@
-import Title from '../../components/Title/Title'
-import Text from '../../components/Text/Text'
-import Image from '../../components/Image/Image'
+import Title from '../../components/Title'
+import Text from '../../components/Text'
+import Image from '../../components/Image'
 import { ReactComponent as AppleIcon } from './assets/apple_icon.svg'
 import { ReactComponent as GoogleIcon } from './assets/google_icon.svg'
 
@@ -29,7 +29,7 @@ const Download = ({
               title={title}
             /> 
           )}
-          {texts.length && (
+          {texts.length > 0 && (
             texts.map(text => 
               <Text 
                 className={className} 
@@ -39,7 +39,7 @@ const Download = ({
             )
           )}
           <div className={`${className}__links`}>
-            {links.length && (
+            {links.length > 0 && (
               links.map((link) => 
                 <a className={`${className}__link`} href={link.url} key={link.name}>
                   {link.name === 'apple' 
@@ -54,7 +54,6 @@ const Download = ({
         <div className={`${className}__image`}>
           {image && (
             <Image 
-              dataType={className} 
               image={image}                  
             />
           )}

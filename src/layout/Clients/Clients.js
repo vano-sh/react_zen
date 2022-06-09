@@ -1,14 +1,18 @@
-import Image from '../../components/Image/Image'
+import { useContext } from 'react'
+import { AppContext } from '../../AppContext'
+import Image from '../../components/Image'
 
 const Clients = ({
   data: {
     lightThemeClients, 
     darkThemeClients
   }, 
-  refClients,
-  isDarkTheme
+  refClients
 }) => {
   const className = 'clients'
+
+  const {isDarkTheme} = useContext(AppContext)
+
   const clientsTheme = isDarkTheme 
     ? darkThemeClients 
     : lightThemeClients
@@ -19,10 +23,9 @@ const Clients = ({
       ref={refClients}
     >    
       <div className={`${className}__wrapper`}>
-        {clientsTheme.length && (
+        {clientsTheme.length > 0 && (
           clientsTheme.map(client => 
             <Image 
-              dataType={className} 
               image={client} 
               key={client.source}
             />

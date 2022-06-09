@@ -1,6 +1,6 @@
-import Title from '../../components/Title/Title'
-import Text from '../../components/Text/Text'
-import Image from '../../components/Image/Image'
+import Title from '../../components/Title'
+import Text from '../../components/Text'
+import Image from '../../components/Image'
 
 const Warranty = ({
    data: {
@@ -10,7 +10,6 @@ const Warranty = ({
    },
    refWarranty
 }) => {
-
   const className = 'warranty'
 
   return (
@@ -26,7 +25,7 @@ const Warranty = ({
               title={title}                  
             /> 
           )}
-          {texts.length && (
+          {texts.length > 0 && (
             texts.map(text => 
               <Text 
                 className={className} 
@@ -39,7 +38,6 @@ const Warranty = ({
         <div className={`${className}__image`}>
           {image && (
             <Image 
-              dataType={className} 
               image={image}                  
             />
           )}

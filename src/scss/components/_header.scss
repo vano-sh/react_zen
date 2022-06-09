@@ -153,8 +153,35 @@
     }
   }
 
+  &__lang {
+    padding: 4px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    background: inherit;
+
+    @media (min-width: $breakpoint_lg) {
+      margin-left: 40px;
+    }
+
+    @media (min-width: $breakpoint_xl) {
+      margin-left: 50px;
+    }
+
+    select {
+      border-color: currentColor;
+      background: inherit;
+      color: currentColor;
+    }
+
+    option {
+      background: inherit;
+      color: currentColor;
+    }
+  }
+
   &__theme {
     height: 100%;
+    margin-left: 20px;
 
     @media (min-width: $breakpoint_lg) {
       margin-left: 40px;
@@ -167,7 +194,7 @@
 
   &__burger {
     position: relative;
-    width: 30px;
+    width: 50px;
     height: 20px;
     margin-left: 20px;
 

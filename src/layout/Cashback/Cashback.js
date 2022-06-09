@@ -1,5 +1,7 @@
-import Title from '../../components/Title/Title'
-import Text from '../../components/Text/Text'
+import Title from '../../components/Title'
+import Text from '../../components/Text'
+import { useContext } from 'react'
+import { AppContext } from '../../AppContext'
 
 const Cashback = ({
   data: {
@@ -7,10 +9,15 @@ const Cashback = ({
     texts, 
     orderBtn
   }, 
-  refCashback,
-  onModalButtonActiveClick
+  refCashback
 }) => {
   const className = 'cashback'
+
+  const {setIsModalActive} = useContext(AppContext)
+  
+  const handleModalButtonActiveClick = () => {
+    setIsModalActive(true)
+  }
 
   return (
     <section 
@@ -25,7 +32,7 @@ const Cashback = ({
               title={title}                  
             />
           )}
-          {texts.length && (
+          {texts.length > 0 && (
             texts.map(text => 
               <Text 
                 className={className} 
@@ -35,7 +42,7 @@ const Cashback = ({
           )}
           <button 
             className={`${className}__btn`}
-            onClick={onModalButtonActiveClick}
+            onClick={handleModalButtonActiveClick}
           >
             {orderBtn.data}
           </button>

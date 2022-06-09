@@ -2,24 +2,22 @@ import Logo from './components/Logo'
 import Menu from './components/Menu'
 import Theme from './components/Theme'
 import Burger from './components/Burger'
+import Language from './components/Language'
+import { useContext } from 'react'
+import { AppContext } from '../../AppContext'
 
 const Header = ({
-  data, 
-  isDarkTheme, 
-  isBurgerActive,
-  refHeader,
-  onLogoClick, 
-  onThemeClick, 
-  onBurgerClick, 
-  onScrollToSectionClick
-}) => {
-  const {
+  data: {
     navigation: {
       menus: menuItems
     }
-  } = data
-
+  },
+  refHeader,
+  onScrollToSectionClick
+}) => {
   const className = 'header'
+
+  const {isDarkTheme} = useContext(AppContext)
 
   return (
     <header
@@ -34,27 +32,25 @@ const Header = ({
 
           <Logo 
             className={className} 
-            onLogoClick={onLogoClick}
           />
 
           <Menu 
             className={className} 
             menuItems={menuItems}
-            isBurgerActive={isBurgerActive}
-            onScrollToSectionClick={onScrollToSectionClick}              
+            onScrollToSectionClick={onScrollToSectionClick}     //?!         
             />
         </nav>
 
+        <Language
+          className={className}
+        />
+
         <Theme 
-          className={className} 
-          isDarkTheme={isDarkTheme} 
-          onThemeClick={onThemeClick}
+          className={className}
         />        
 
         <Burger 
           className={className}
-          isBurgerActive={isBurgerActive}
-          onBurgerClick={onBurgerClick}
         />
       </div>
     </header>

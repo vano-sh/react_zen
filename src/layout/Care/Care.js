@@ -1,6 +1,6 @@
-import Title from '../../components/Title/Title'
-import Text from '../../components/Text/Text'
-import Image from '../../components/Image/Image'
+import Title from '../../components/Title'
+import Text from '../../components/Text'
+import Image from '../../components/Image'
 
 const Care = ({
   data: {
@@ -24,7 +24,7 @@ const Care = ({
               className={className} 
               title={title}/> 
           )}
-          {texts.length && (
+          {texts.length > 0 && (
             texts.map(text => 
               <Text 
                 className={className} 
@@ -36,7 +36,6 @@ const Care = ({
         <div className={`${className}__image`}>
           {image && (
             <Image 
-              dataType={className} 
               image={image}
             />
           )}

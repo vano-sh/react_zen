@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { API_BASE_URL } from './constans/api'
 import Preloader from './layout/Preloader'
+import useFetch from './hooks/useFetch'
 import Header from './layout/Header'
 import Download from './layout/Download'
 import Warranty from './layout/Warranty'
@@ -9,39 +10,40 @@ import Cashback from './layout/Cashback'
 import Clients from './layout/Clients'
 import Footer from './layout/Footer'
 import Modal from './layout/Modal'
+import {AppContext} from './AppContext'
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [data, setData] = useState({})
-  const [isLogoClicked, setIsLogoClicked] = useState(false)
-  const [isDarkTheme, setIsDarkTheme] = useState(() => {
-    return localStorage.getItem('isDarkTheme') === 'true'
-  })
-  const [isBurgerActive, setIsBurgerActive] = useState(false)
+  //?!
   const [targetSectionScrolling, setTargetSectionScrolling] = useState(0)
-  const [isModalActive, setIsModalActive] = useState(true)
-
+  
   const refHeader = useRef(null)
   const refDownload = useRef(null)
   const refWarranty = useRef(null)
   const refCare = useRef(null)
   const refCashback = useRef(null)
   const refClients = useRef(null)
+  
+  const {
+    lang, 
+    isDarkTheme, 
+    isModalActive, 
+    setIsBurgerActive
+  } = useContext(AppContext)
+  const {getData} = useFetch(API_BASE_URL)  
+  
+  useEffect(() => {
+    setIsLoading(true)
+    getData(`${lang}.json`).then(
+      data => setData(data),
+      error => console.error(error)
+    )
+  }, [lang])
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}.json`)
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-        }
-      })
-      .then(data => setData(data))
-      .catch(error => console.error(error))
-  }, [])
-
-  useEffect(() => {
-    if (Object.values(data).length) {
-        const timerId = setTimeout(() => {
+    if (data) {
+      const timerId = setTimeout(() => {
         setIsLoading(false)     
       }, 1000);
 
@@ -51,14 +53,7 @@ const App = () => {
     }
   }, [data])
 
-  useEffect(() => {
-    setIsBurgerActive(false)    
-    window.scroll({
-      top: 0,
-      behavior: 'smooth'
-    })    
-  }, [isLogoClicked])
-
+  //?!
   useEffect(() => {
     localStorage.setItem('isDarkTheme', isDarkTheme)
 
@@ -67,35 +62,26 @@ const App = () => {
     } else {
       document.body.classList.remove('dark')
     }
-  }, [isDarkTheme])  
+  }, [isDarkTheme])
 
+  //?!
   useEffect(() => {
     window.scrollTo({
-      top: targetSectionScrolling,                   //elementRef.current.offsetTop,
+      top: targetSectionScrolling,
       behavior: 'smooth'
     })
   }, [targetSectionScrolling])
 
+  //?!
   useEffect(() => {
     if (isModalActive) {
       document.body.classList.add('hidden')
     } else {
       document.body.classList.remove('hidden')
     }
-  }, [isModalActive])  
+  }, [isModalActive])    
 
-  const handleLogoScrollClick = () => {
-    setIsLogoClicked(!isLogoClicked)
-  }
-
-  const handleThemeChangeClick = () => {
-    setIsDarkTheme(!isDarkTheme)    
-  }
-  
-  const handleBurgerActiveClick = () => {
-    setIsBurgerActive(!isBurgerActive)
-  }
-
+  //?!
   const handleScrollToSectionClick = (targetName) => {
     const headerHeight = refHeader.current.clientHeight
     setIsBurgerActive(false)
@@ -131,81 +117,64 @@ const App = () => {
     }
   }
 
-  const handleModalButtonActiveClick = () => {
-    setIsModalActive(true)
-  }
-
-  const handleModalCloseClick = () => {
-    setIsModalActive(false)
-  }
-
-  return (
+  return (    
     <>
       {isLoading && (
         <Preloader/>
       )}
 
-      {data.header && (
+      {data?.header && (
         <Header
-          data={data.header}
-          isDarkTheme={isDarkTheme}
-          isBurgerActive={isBurgerActive}
-          refHeader={refHeader}
-          onLogoClick={handleLogoScrollClick}
-          onThemeClick={handleThemeChangeClick}
-          onBurgerClick={handleBurgerActiveClick}
+          data={data.header}          
+          refHeader={refHeader}          
           onScrollToSectionClick={handleScrollToSectionClick}
         />
       )}
 
-      {data.download && (
+      {data?.download && (
         <Download
           data={data.download}
           refDownload={refDownload}
         />
       )}
 
-      {data.warranty && (
+      {data?.warranty && (
         <Warranty
           data={data.warranty}
           refWarranty={refWarranty}
         />
       )}
 
-      {data.care && (
+      {data?.care && (
         <Care
           data={data.care}
           refCare={refCare}
         />
       )}
 
-      {data.cashback && (
+      {data?.cashback && (
         <Cashback 
           data={data.cashback}
           refCashback={refCashback}
-          onModalButtonActiveClick={handleModalButtonActiveClick}
         />
       )}
 
-      {data.clients && (
+      {data?.clients && (
         <Clients
           data={data.clients}
           refClients={refClients}
-          isDarkTheme= {isDarkTheme}
         />
       )}
 
-      {data.footer && (
+      {data?.footer && (
         <Footer
           data={data.footer}
         />
       )}
 
-      {data.modal && (
+      {data?.modal && (
         <Modal
           data={data.modal}
-          isModalActive={isModalActive}
-          onModalCloseClick={handleModalCloseClick}
         />
       )}
     </>

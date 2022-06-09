@@ -1,4 +1,4 @@
-const Image = ({dataType, image}) => {
+const Image = ({image}) => {
   const {alternate, source} = image
 
   return  (
