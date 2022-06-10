@@ -11,6 +11,8 @@ import Clients from './layout/Clients'
 import Footer from './layout/Footer'
 import Modal from './layout/Modal'
 import {AppContext} from './AppContext'
+import useBodyHidden from './hooks/useBodyHidden'
+import useDarkTheme from './hooks/useDarkTheme'
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -54,15 +56,16 @@ const App = () => {
   }, [data])
 
   //?!
-  useEffect(() => {
-    localStorage.setItem('isDarkTheme', isDarkTheme)
+  useDarkTheme(isDarkTheme)
+  // useEffect(() => {
+  //   localStorage.setItem('isDarkTheme', isDarkTheme)
 
-    if (isDarkTheme) {
-      document.body.classList.add('dark')
-    } else {
-      document.body.classList.remove('dark')
-    }
-  }, [isDarkTheme])
+  //   if (isDarkTheme) {
+  //     document.body.classList.add('dark')
+  //   } else {
+  //     document.body.classList.remove('dark')
+  //   }
+  // }, [isDarkTheme])
 
   //?!
   useEffect(() => {
@@ -73,13 +76,14 @@ const App = () => {
   }, [targetSectionScrolling])
 
   //?!
-  useEffect(() => {
-    if (isModalActive) {
-      document.body.classList.add('hidden')
-    } else {
-      document.body.classList.remove('hidden')
-    }
-  }, [isModalActive])    
+  useBodyHidden(isModalActive)
+  // useEffect(() => {
+  //   if (isModalActive) {
+  //     document.body.classList.add('hidden')
+  //   } else {
+  //     document.body.classList.remove('hidden')
+  //   }
+  // }, [isModalActive])    
 
   //?!
   const handleScrollToSectionClick = (targetName) => {
