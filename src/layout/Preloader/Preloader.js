@@ -1,19 +1,22 @@
+import { AppContext } from '../../AppContext'
 import { useContext } from 'react'
-import {AppContext} from '../../AppContext'
 import { ReactComponent as PreloadIcon } from './assets/preloadIcon.svg'
+import cslx from 'clsx'
 
 const Preloader = () => {
-  const {isDarkTheme} = useContext(AppContext)
+
+  const { theme } = useContext(AppContext)
+
+  const className = 'preloader'
+  const darkClassName = cslx({ 'dark': theme === 'dark' })
 
   return (
-    <div className={isDarkTheme
-      ? 'preloader dark'
-      : 'preloader'
-    }>
-      <div className='preloader__image'>
-        <PreloadIcon/>
-      </div>                 
+    <div className={`${className} ${darkClassName}`}>
+      <div className={`${className}__image`}>
+        <PreloadIcon />
+      </div>
     </div>
-)}
+  )
+}
 
 export default Preloader

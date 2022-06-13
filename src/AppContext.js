@@ -2,36 +2,40 @@ import { createContext, useState } from 'react'
 
 const AppContext = createContext()
 
-const AppProvider = props => {
+const AppProvider = ({ children }) => {
+
+  const [isLoading, setIsLoading] = useState(true)
   const [lang, setLang] = useState(() => {
     return localStorage.getItem('lang') ?? 'en'
-  })  
-  const [isLogoClicked, setIsLogoClicked] = useState(false)
-  const [isDarkTheme, setIsDarkTheme] = useState(() => {
-    return localStorage.getItem('isDarkTheme') === 'true'
+  })
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') ?? 'light'
   })
   const [isBurgerActive, setIsBurgerActive] = useState(false)
   const [isModalActive, setIsModalActive] = useState(false)
 
+  const toogleTheme = () => {
+    theme === 'light'
+      ? setTheme('dark')
+      : setTheme('light')
+  }
+
   const value = {
-    lang,
-    isLogoClicked,
-    isDarkTheme,
+    isLoading,
+    setIsLoading,
+    lang, setLang,
+    theme, toogleTheme,
     isBurgerActive,
-    isModalActive,
-    setLang,
-    setIsLogoClicked,
-    setIsDarkTheme,
     setIsBurgerActive,
+    isModalActive,
     setIsModalActive,
   }
 
   return (
     <AppContext.Provider value={value}>
-      {props.children}
+      {children}
     </AppContext.Provider>
   )
 }
 
-export {AppContext, AppProvider}
-
+export { AppContext, AppProvider }

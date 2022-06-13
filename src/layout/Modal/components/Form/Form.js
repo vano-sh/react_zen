@@ -3,34 +3,17 @@ import { API_BASE_URL } from '../../../../constans/api'
 import useFetch from '../../../../hooks/useFetch'
 import Input from '../Input'
 
-const Form = ({
-  className, 
-  form: {
-    fields, 
-    connection: {
-      label,
-      options
-    }, 
-    policy: {
-      checkbox,
-      linkPolicy: {
-        url,
-        data
-      }
-    }, 
-    buttonText
-  },
-  onTitleChange
-}) => {  
-  const [name, setName] = useState('')  
-  const [tel, setTel] = useState('')  
-  const [email, setEmail] = useState('')  
-  const [connection, setConnection] = useState('')  
+const Form = ({ parentClassName, form, onTitleChange }) => {
+
+  const [name, setName] = useState('')
+  const [tel, setTel] = useState('')
+  const [email, setEmail] = useState('')
+  const [connection, setConnection] = useState('')
   const [isPolicy, setIsPolicy] = useState(true)
-  
+
   const refInputName = useRef()
 
-  const {postData} = useFetch(API_BASE_URL)
+  const { postData } = useFetch(API_BASE_URL)
 
   useEffect(() => {
     refInputName.current.focus()
@@ -53,10 +36,10 @@ const Form = ({
   }
 
   const validateName = (value) => {
-    if (value.length >= 2 
+    if (value.length >= 2
       && value.search(/[^a-z]+/gi) === -1) {
-      return 'success'     
-    } else if (value.length === 0 ) {
+      return 'success'
+    } else if (value.length === 0) {
       return ''
     } else {
       return 'error'
@@ -65,18 +48,18 @@ const Form = ({
   const validateTel = (value) => {
     if (value.length >= 10
       && value.search(/[^0-9]+/gi) === -1) {
-      return 'success'     
-    } else if (value.length === 0 ) {
+      return 'success'
+    } else if (value.length === 0) {
       return ''
     } else {
       return 'error'
     }
   }
   const validateEmail = (value) => {
-    if (value.length >= 9 
+    if (value.length >= 9
       && value.search(/[a-z0-9\.]+@[a-z]{4,6}\.(ru|com|by)/gi) !== -1) {
-      return 'success'     
-    } else if (value.length === 0 ) {
+      return 'success'
+    } else if (value.length === 0) {
       return ''
     } else {
       return 'error'
@@ -91,7 +74,7 @@ const Form = ({
     ) {
       return false
     }
-    return true    
+    return true
   }
 
   const handleFormSubmit = (event) => {
@@ -110,101 +93,103 @@ const Form = ({
     console.log(order)
 
     postData(`en/order.json`, order)
-      .catch(error => console.error(error))  
-    
+      .catch(error => console.error(error))
+
     onTitleChange()
     setName('')
     setTel('')
     setEmail('')
     setConnection('')
   }
-  
+
   return (
-    <form 
-      className={`${className}__form`} 
+    <form
+      className={`${parentClassName}__form`}
       onSubmit={handleFormSubmit}
-    >      
-      {fields.length > 0 && (
-        fields.map(field => {
+    >
+      {form?.fields.length > 0 && (
+        form.fields.map(field => {
           if (field.type === 'text') {
             return (
               <Input
-                className={`${className}__input ${validateName(name)}`} 
+                parentClassName={`${parentClassName}__input ${validateName(name)}`}
                 field={field}
                 key={field.type}
-                refInputName={refInputName} 
+                refInputName={refInputName}
                 value={name}
                 handleOnChange={handleNameOnChange}
               />
-          )} else if (field.type === 'tel') {
+            )
+          } else if (field.type === 'tel') {
             return (
-              <Input 
-                className={`${className}__input ${validateTel(tel)}`} 
+              <Input
+                parentClassName={`${parentClassName}__input ${validateTel(tel)}`}
                 field={field}
                 key={field.type}
                 value={tel}
                 handleOnChange={handleTelOnChange}
               />
-          )} else {
+            )
+          } else {
             return (
-              <Input 
-                className={`${className}__input ${validateEmail(email)}`} 
+              <Input
+                parentClassName={`${parentClassName}__input ${validateEmail(email)}`}
                 field={field}
                 key={field.type}
                 value={email}
                 handleOnChange={handleEmailOnChange}
               />
-          )}
+            )
+          }
         })
       )}
 
-      <label 
-        className={connection 
-          ? `${className}__select success`
-          : `${className}__select`
-        } 
+      <label
+        className={connection
+          ? `${parentClassName}__select success`
+          : `${parentClassName}__select`
+        }
       >
-        <span>{label}</span>          
+        <span>{form.connection.label}</span>
         <select
           value={connection}
           onChange={handleConnectionOnChange}
         >
           <option></option>
-          {options.length && (
-            options.map(option => 
-              <option 
-                value={option.value} 
+          {form?.connection.options.length && (
+            form.connection.options.map(option =>
+              <option
+                value={option.value}
                 key={option.value}
               >
                 {option.text}
               </option>
-            )
-          )}
+            ))}
         </select>
-      </label>    
+      </label>
 
-      <label 
-        className={`${className}__policy`}
+      <label
+        className={`${parentClassName}__policy`}
       >
-        <input 
-          type={checkbox.type} 
+        <input
+          type={form.policy.checkbox.type}
           checked={isPolicy}
           onChange={handlePolicyOnChange}
         />
-        <a href={url}>
-          {data}
+        <a href={form.policy.linkPolicy.url}>
+          {form.policy.linkPolicy.data}
         </a>
       </label>
 
-      <button 
-        className={`${className}__btn`} 
+      <button
+        className={`${parentClassName}__btn`}
         type='submit'
         disabled={validateForm()}
       >
         <span>
-          {buttonText ? buttonText : 'Submit'}
+          {form.buttonText ? form.buttonText : 'Submit'}
         </span>
-      </button>      
+      </button>
     </form>
   )
 }

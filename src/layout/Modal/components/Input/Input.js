@@ -1,13 +1,14 @@
 const Input = ({
-  className, 
+  parentClassName,
   field,
   refInputName,
   value,
   handleOnChange
 }) => {
+
   return (
     <input
-      className={className} 
+      className={parentClassName}
       type={field.type}
       placeholder={field.placeholder}
       ref={refInputName}

@@ -1,1 +1,1 @@
-export {default} from './ColumnItem'
+export { default } from './ColumnItem'

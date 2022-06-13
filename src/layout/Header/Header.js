@@ -1,57 +1,40 @@
+import { AppContext } from '../../AppContext'
+import { useContext } from 'react'
+import clsx from 'clsx'
 import Logo from './components/Logo'
 import Menu from './components/Menu'
 import Theme from './components/Theme'
 import Burger from './components/Burger'
 import Language from './components/Language'
-import { useContext } from 'react'
-import { AppContext } from '../../AppContext'
 
-const Header = ({
-  data: {
-    navigation: {
-      menus: menuItems
-    }
-  },
-  refHeader,
-  onScrollToSectionClick
-}) => {
+const Header = ({ data }) => {
+
+  const { theme } = useContext(AppContext)
+
   const className = 'header'
-
-  const {isDarkTheme} = useContext(AppContext)
+  const darkClassName = clsx({ 'dark': theme === 'dark' })
 
   return (
     <header
-      className={isDarkTheme 
-        ? `${className} dark`
-        : className  
-      }
-      ref={refHeader} 
+      className={`${className} ${darkClassName}`}
+      data-name={data.name}
     >
       <div className={`${className}__wrapper`}>
         <nav className={`${className}__nav`}>
 
-          <Logo 
-            className={className} 
-          />
+          <Logo parentClassName={className} />
 
-          <Menu 
-            className={className} 
-            menuItems={menuItems}
-            onScrollToSectionClick={onScrollToSectionClick}     //?!         
-            />
+          <Menu
+            parentClassName={className}
+            menuItems={data.navigation.menus}
+          />
         </nav>
 
-        <Language
-          className={className}
-        />
+        <Language parentClassName={className} />
 
-        <Theme 
-          className={className}
-        />        
+        <Theme parentClassName={className} />
 
-        <Burger 
-          className={className}
-        />
+        <Burger parentClassName={className} />
       </div>
     </header>
   )

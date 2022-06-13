@@ -1,33 +1,32 @@
-import { useContext, useEffect } from 'react'
 import { AppContext } from '../../../../AppContext'
+import { useContext, useEffect, useState } from 'react'
 import { ReactComponent as LogoIcon } from './assets/logo.svg'
+import { scrollToTop } from '../../../../utils/helpers'
 
-const Logo = ({className}) => {
-  const {
-    isLogoClicked, 
-    setIsLogoClicked,
-    setIsBurgerActive
-  } = useContext(AppContext)
+const Logo = ({ parentClassName }) => {
 
-  //?!
-  useEffect(() => {       
-    window.scroll({
-      top: 0,
-      behavior: 'smooth'
-    })    
+  const { setIsBurgerActive } = useContext(AppContext)
+
+  const [isLogoClicked, setIsLogoClicked] = useState(null)
+
+  useEffect(() => {
+    if (isLogoClicked) {
+      scrollToTop()
+      setIsLogoClicked(false)
+    }
   }, [isLogoClicked])
 
-  const handleLogoScrollClick = () => {
-    setIsBurgerActive(false) 
-    setIsLogoClicked(!isLogoClicked)
+  const handleButtonClick = () => {
+    setIsBurgerActive(false)
+    setIsLogoClicked(true)
   }
 
   return (
     <button
-      className={`${className}__logo`}
-      onClick={handleLogoScrollClick}
+      className={`${parentClassName}__logo`}
+      onClick={handleButtonClick}
     >
-      <LogoIcon/>
+      <LogoIcon />
     </button>
   )
 }

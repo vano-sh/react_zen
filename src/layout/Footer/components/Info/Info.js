@@ -1,39 +1,26 @@
 import Text from '../../../../components/Text'
-import {ReactComponent as LogoFooterIcon} from './assets/logo_footer_icon.svg'
-import {ReactComponent as CopyrightIcon} from './assets/copyright_icon.svg'
+import { ReactComponent as LogoFooterIcon } from './assets/logo_footer_icon.svg'
+import { ReactComponent as CopyrightIcon } from './assets/copyright_icon.svg'
 
-const Info = ({
-  className, 
-  info: {
-    texts,
-    copyright
-  }
-}) => {
-  const currentClassName = className
-    ? `${className}__info`
-    : 'info'
-  const childClassName = className
-    ? className
-    : currentClassName
+const Info = ({ parentClassName, info }) => {
 
   return (
-    <div className={currentClassName}>
-      <div className={`${childClassName}__body`}>
+    <div className={`${parentClassName}__info`}>
+      <div className={`${parentClassName}__body`}>
         <div>
-          <LogoFooterIcon/>
+          <LogoFooterIcon />
         </div>
-        <div className={`${childClassName}__copies`}>
-          {texts.length > 0 &&
-            texts.map(text => 
-              <Text className={childClassName} text={text} key={text}/>
-            )}
-        </div>  
+        <div className={`${parentClassName}__copies`}>
+          {info?.texts.length > 0 && info.texts.map((text) =>
+            <Text parentClassName={parentClassName} text={text} key={text} />
+          )}
+        </div>
       </div>
-      <a 
-        className={`${childClassName}__copyright`} 
-        href={copyright.url}
+      <a
+        className={`${parentClassName}__copyright`}
+        href={info.copyright.url}
       >
-        <CopyrightIcon/>
+        <CopyrightIcon />
       </a>
     </div>
   )

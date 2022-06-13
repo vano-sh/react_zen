@@ -1,30 +1,28 @@
-import { useContext } from 'react'
 import { AppContext } from '../../../../AppContext'
+import { useContext } from 'react'
 import MenuItem from './MenuItem'
 
 const Menu = ({
-  className,
+  parentClassName,
   menuItems,
-  onScrollToSectionClick
 }) => {
-  const currentClassName = `${className}__menu`
+  const currentClassName = `${parentClassName}__menu`
 
-  const {isBurgerActive} = useContext(AppContext)
+  const { isBurgerActive } = useContext(AppContext)
 
   return (
-    <ul className={isBurgerActive 
+    <ul className={isBurgerActive
       ? `${currentClassName} active`
       : currentClassName
-    }>      
-      {menuItems.length && 
-        menuItems.map(item => 
-          <MenuItem 
-            key={item.target}
-            className={className} 
-            item={item}
-            onScrollToSectionClick={onScrollToSectionClick} //?!
-          />
-      )} 
+    }>
+      {menuItems?.length > 0 && menuItems.map(item => (
+        <MenuItem
+          key={item.target}
+          parentClassName={parentClassName}
+          item={item}
+        // onScrollToSectionClick={onScrollToSectionClick}
+        />
+      ))}
     </ul>
   )
 }

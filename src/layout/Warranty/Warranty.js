@@ -2,31 +2,24 @@ import Title from '../../components/Title'
 import Text from '../../components/Text'
 import Image from '../../components/Image'
 
-const Warranty = ({
-   data: {
-    title, 
-    texts, 
-    image
-   },
-   refWarranty
-}) => {
+const Warranty = ({data}) => {
   const className = 'warranty'
 
   return (
     <section
       className={className}
-      ref={refWarranty}
+      data-name={data.name}
     >
       <div className={`${className}__wrapper`}>
         <div className={`${className}__body`}>
-          {title && (
+          {data.title && (
             <Title 
               className={className} 
-              title={title}                  
+              title={data.title}                  
             /> 
           )}
-          {texts.length > 0 && (
-            texts.map(text => 
+          {data.texts.length > 0 && (
+            data.texts.map(text => 
               <Text 
                 className={className} 
                 text={text} 
@@ -36,9 +29,9 @@ const Warranty = ({
           )}                 
         </div>
         <div className={`${className}__image`}>
-          {image && (
+          {data.image && (
             <Image 
-              image={image}                  
+              image={data.image}                  
             />
           )}
         </div>

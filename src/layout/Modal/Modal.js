@@ -1,16 +1,14 @@
 import { useContext, useRef } from 'react'
 import { AppContext } from '../../AppContext'
-import {ReactComponent as CloseIcon} from './assets/close_icon.svg'
+import clsx from 'clsx'
+import { ReactComponent as CloseIcon } from './assets/close_icon.svg'
 import Title from '../../components/Title'
 import Form from './components/Form'
 
-const Modal = ({
-  data: {
-    title,
-    form
-  }
-}) => {
+const Modal = ({ data }) => {
+
   const className = 'modal'
+
   const refTitle = useRef(null)
 
   const {
@@ -19,51 +17,52 @@ const Modal = ({
     setIsModalActive
   } = useContext(AppContext)
 
+  const activeClass = clsx({ 'active': isModalActive })
+
   const handleModalCloseClick = () => {
     setIsModalActive(false)
   }
 
-  const handleTitleChange = () => { 
+  const handleTitleChange = () => {
     const prevTitleValue = refTitle.current.innerText
-    refTitle.current.innerText = (lang === 'en') 
-      ? 'Submit!' 
+    refTitle.current.innerText = (lang === 'en')
+      ? 'Submit!'
       : 'Отправлено!'
-    setTimeout(()=> {
+    setTimeout(() => {
       setIsModalActive(false)
       refTitle.current.innerText = prevTitleValue
     }, 2000)
   }
 
   return (
-    <div 
-      className={isModalActive
-        ? `${className} active`
-        : className
-      }
+    <div
+      className={`${className} ${activeClass}`}
     >
       <div className={`${className}__body`}>
         <button
-          className={`${className}__close`} 
+          className={`${className}__close`}
           onClick={handleModalCloseClick}
         >
-          <CloseIcon/>
+          <CloseIcon />
         </button>
-        {title && (
-          <Title 
-            className={className} 
-            title={title}
+
+        {data.title && (
+          <Title
+            parentClassName={className}
+            title={data.title}
             refTitle={refTitle}
           />
         )}
-        {form && (
+
+        {data.form && (
           <Form
-            className={className}
-            form={form}
+            parentClassName={className}
+            form={data.form}
             onTitleChange={handleTitleChange}
           />
         )}
-      </div>      
-    </div>  
+      </div>
+    </div>
   )
 }
 

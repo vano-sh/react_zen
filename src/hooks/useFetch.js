@@ -1,4 +1,4 @@
-const useFetch = (baseURL) => {   
+const useFetch = (baseURL) => {
   const getData = (endPoint) => {
     return new Promise((resolve, reject) => {
       fetch(baseURL + endPoint)
@@ -31,8 +31,8 @@ const useFetch = (baseURL) => {
         .catch(error => reject(error))
     })
   }
-  
-  return {getData, postData}
+
+  return { getData, postData }
 }
 
 export default useFetch

@@ -1,38 +1,25 @@
 import Title from '../../../../components/Title'
 import ColumnItem from './ColumnItem'
 
-const Column = ({
-  className, 
-  column: {
-    title,
-    links
-  }
-}) => {
-  const currentClassName = className
-    ? `${className}__column`
-    : 'column'
-  const childClassName = className
-    ? className
-    : currentClassName
+const Column = ({ parentClassName, column }) => {
 
   return (
-    <div className={currentClassName}>
-      {title && (
+    <div className={`${parentClassName}__column`}>
+      {column?.title && (
         <Title
-          className={className}
-          title={title}
+          parentClassName={parentClassName}
+          title={column.title}
         />
       )}
-      <ul className={`${childClassName}__list`}>
-        {links.length > 0 && (
-          links.map(link => 
-            <ColumnItem
-              className={childClassName}
-              link={link}
-              key={link.data}
-            />
-          )
-        )}
+
+      <ul className={`${parentClassName}__list`}>
+        {column?.links.length > 0 && column.links.map((link) => (
+          <ColumnItem
+            parentClassName={parentClassName}
+            link={link}
+            key={link.data}
+          />
+        ))}
       </ul>
     </div>
   )

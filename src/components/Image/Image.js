@@ -1,11 +1,6 @@
-const Image = ({image}) => {
-  const {alternate, source} = image
-
-  return  (
-    <img 
-      src={source} 
-      alt={alternate}        
-    />
+const Image = ({ image }) => {
+  return (
+    <img src={image.source} alt={image.alternate} />
   )
 }
 export default Image

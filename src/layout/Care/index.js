@@ -1,1 +1,1 @@
-export {default} from './Care'
+export { default } from './Care'

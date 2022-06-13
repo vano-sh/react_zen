@@ -1,11 +1,12 @@
 const MenuItem = ({
-  className, 
+  parentClassName,
   item,
   onScrollToSectionClick
 }) => {
   return (
-    <li className={`${className}__item`}>
+    <li className={`${parentClassName}__item`}>
       <button
+        data-btn={item.target}
         onClick={() => onScrollToSectionClick(item.target)}
       >
         <span>{item.data}</span>

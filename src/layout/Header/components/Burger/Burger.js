@@ -1,27 +1,21 @@
-import { useContext } from "react"
-import { AppContext } from "../../../../AppContext"
+import { AppContext } from '../../../../AppContext'
+import { useContext } from 'react'
+import clsx from 'clsx'
 
-const Burger = ({
-  className,
-}) => {
-  const currentClassName = `${className}__burger`
-  
-  const {
-    isBurgerActive, 
-    setIsBurgerActive
-  } = useContext(AppContext)
+const Burger = ({ parentClassName }) => {
 
-  const handleBurgerActiveClick = () => {
+  const { isBurgerActive, setIsBurgerActive } = useContext(AppContext)
+
+  const activeClassName = clsx({ 'active': isBurgerActive })
+
+  const handleButtonClick = () => {
     setIsBurgerActive(!isBurgerActive)
   }
 
   return (
     <button
-      className={isBurgerActive 
-        ? `${currentClassName} active`
-        : currentClassName
-      }
-      onClick={handleBurgerActiveClick}
+      className={`${parentClassName}__burger ${activeClassName}`}
+      onClick={handleButtonClick}
     >
       <span></span>
     </button>

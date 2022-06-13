@@ -1,20 +1,18 @@
-import {AppContext} from '../../../../AppContext'
+import { AppContext } from '../../../../AppContext'
 import { useContext } from 'react'
 
-const Language = ({className}) => {
-  const {
-    lang, 
-    setLang
-  } = useContext(AppContext)
+const Language = ({ parentClassName }) => {
+  const { lang, setLang, setIsLoading } = useContext(AppContext)
 
   const handleLangChange = (event) => {
+    setIsLoading(true)
     localStorage.setItem('lang', event.target.value)
     setLang(event.target.value)
   }
 
   return (
     <label
-      className={`${className}__lang`}
+      className={`${parentClassName}__lang`}
     >
       <select
         value={lang}

@@ -1,25 +1,28 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { AppContext } from '../../../../AppContext'
+import useToogleTheme from '../../../../hooks/useToogleTheme'
 import { ReactComponent as MoonIcon } from './assets/moon.svg'
 import { ReactComponent as SunIcon } from './assets/sun.svg'
 
-const Theme = ({className}) => {
-  const {
-    isDarkTheme, 
-    setIsDarkTheme
-  } = useContext(AppContext)
 
-  const handleThemeChangeClick = () => {
-    setIsDarkTheme(!isDarkTheme)    
-  }
+const Theme = ({ parentClassName }) => {
+
+  const { theme, toogleTheme } = useContext(AppContext)
+
+  useToogleTheme(theme)
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
   return (
     <button
-      className={`${className}__theme`}
-      onClick={handleThemeChangeClick}
+      className={`${parentClassName}__theme`}
+      onClick={() => toogleTheme()}
     >
-      {isDarkTheme         
-        ? <SunIcon/> 
-        : <MoonIcon/>
+      {theme === 'light'
+        ? <MoonIcon />
+        : <SunIcon />
       }
     </button>
   )

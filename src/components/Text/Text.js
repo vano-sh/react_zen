@@ -1,10 +1,6 @@
-const Text = ({className, text}) => {
-  const currentClassName = className 
-    ? `${className}__copy` 
-    : 'copy'
-
+const Text = ({ parentClassName, text }) => {
   return (
-    <p className={currentClassName}>
+    <p className={`${parentClassName}__copy`} >
       {text}
     </p>
   )
