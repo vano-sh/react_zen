@@ -2,12 +2,11 @@
 
 .progress-bar {
   position: fixed;
-  top: $height_header_xs - 2px;
+  top: $height_header_xs+3px;
   z-index: $z-index_progress-bar;
   width: 0;
   height: 2px;
   background: #222;
-
 
   @media (min-width: $breakpoint_lg) {
     top: $height_header_lg - 2px;

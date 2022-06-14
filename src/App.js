@@ -12,6 +12,7 @@ import Cashback from './layout/Cashback'
 import Clients from './layout/Clients'
 import Footer from './layout/Footer'
 import Modal from './layout/Modal'
+import ProgressBar from './layout/ProgressBar/ProgressBar'
 
 const App = () => {
 
@@ -44,6 +45,8 @@ const App = () => {
 
   return (
     <>
+      <ProgressBar />
+
       {isLoading && <Preloader />}
 
       {data?.header && <Header data={data.header} />}
