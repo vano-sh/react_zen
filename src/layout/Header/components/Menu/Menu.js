@@ -20,7 +20,6 @@ const Menu = ({
           key={item.target}
           parentClassName={parentClassName}
           item={item}
-        // onScrollToSectionClick={onScrollToSectionClick}
         />
       ))}
     </ul>

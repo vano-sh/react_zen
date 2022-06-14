@@ -3,7 +3,7 @@ import Text from '../../components/Text'
 import Image from '../../components/Image'
 
 const Care = ({ data }) => {
-  
+
   const className = 'care'
 
   return (
@@ -18,14 +18,12 @@ const Care = ({ data }) => {
               parentClassName={className}
               title={data.title} />
           )}
-          {data?.texts.length > 0 && (
-            data.texts.map(text =>
-              <Text
-                parentClassName={className}
-                text={text}
-                key={text}
-              />
-            )
+          {data?.texts.length > 0 && data.texts.map(text =>
+            <Text
+              parentClassName={className}
+              text={text}
+              key={text}
+            />
           )}
         </div>
         <div className={`${className}__image`}>

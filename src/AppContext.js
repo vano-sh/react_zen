@@ -15,9 +15,7 @@ const AppProvider = ({ children }) => {
   const [isModalActive, setIsModalActive] = useState(false)
 
   const toogleTheme = () => {
-    theme === 'light'
-      ? setTheme('dark')
-      : setTheme('light')
+    theme === 'light' ? setTheme('dark') : setTheme('light')
   }
 
   const value = {

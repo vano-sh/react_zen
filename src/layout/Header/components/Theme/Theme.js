@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { AppContext } from '../../../../AppContext'
 import useToogleTheme from '../../../../hooks/useToogleTheme'
 import { ReactComponent as MoonIcon } from './assets/moon.svg'
@@ -10,10 +10,6 @@ const Theme = ({ parentClassName }) => {
   const { theme, toogleTheme } = useContext(AppContext)
 
   useToogleTheme(theme)
-
-  useEffect(() => {
-    localStorage.setItem('theme', theme)
-  }, [theme])
 
   return (
     <button

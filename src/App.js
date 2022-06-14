@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { AppContext } from './AppContext'
 import { useState, useEffect, useContext } from 'react'
-import useFetch from './hooks/useFetch'
 import { API_BASE_URL } from './constans/api'
+import useFetch from './hooks/useFetch'
 import Preloader from './layout/Preloader'
 import Header from './layout/Header'
 import Download from './layout/Download'
@@ -17,10 +17,10 @@ const App = () => {
 
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
-  
-  const {isLoading, setIsLoading, lang} = useContext(AppContext)
-  const {getData} = useFetch(API_BASE_URL)  
-  
+
+  const { isLoading, setIsLoading, lang } = useContext(AppContext)
+  const { getData } = useFetch(API_BASE_URL)
+
   useEffect(() => {
     getData(`${lang}.json`).then(
       (data) => setData(data),
@@ -34,16 +34,17 @@ const App = () => {
         setIsLoading(false)
       }, 1000)
 
-      return () => clearTimeout(timerId)}
+      return () => clearTimeout(timerId)
+    }
   }, [data])
 
   useEffect(() => {
     error && console.error(error)
   }, [error])
 
-  return (    
+  return (
     <>
-      {isLoading && <Preloader/>}
+      {isLoading && <Preloader />}
 
       {data?.header && <Header data={data.header} />}
 
