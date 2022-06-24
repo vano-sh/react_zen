@@ -2,14 +2,15 @@ import { AppContext } from '../../AppContext'
 import { useContext } from 'react'
 import Title from '../../components/Title'
 import Text from '../../components/Text'
+import useBodyHidden from '../../hooks/useBodyHidden'
 
 const Cashback = ({ data }) => {
-  
+
   const className = 'cashback'
 
   const { setIsModalActive } = useContext(AppContext)
 
-  const handleModalButtonActiveClick = () => {
+  const handleModalButtonActiveClick = () => {    
     setIsModalActive(true)
   }
 

@@ -1,81 +1,58 @@
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
+import { AppContext } from '../../../../AppContext'
 import { API_BASE_URL } from '../../../../constans/api'
 import useFetch from '../../../../hooks/useFetch'
-import Input from '../Input'
+import { validateEmail, validateName, validateTel } from '../../../../utils/helpers'
+import Connection from './components/Connection'
+import Field from './components/Field'
 
-const Form = ({ parentClassName, form, onTitleChange }) => {
+const Form = ({ parentClassName, form, setIsSubmitForm }) => {
 
   const [name, setName] = useState('')
+  const [isValidName, setIsValidName] = useState(false)
   const [tel, setTel] = useState('')
+  const [isValidTel, setIsValidTel] = useState(false)
   const [email, setEmail] = useState('')
+  const [isValidEmail, setIsValidEmail] = useState(false)
   const [connection, setConnection] = useState('')
-  const [isPolicy, setIsPolicy] = useState(true)
+  const [isValidConnection, setIsValidConnection] = useState(false)
+  const [isPolicyChecked, setIsPolicyChecked] = useState(true)
 
-  const refInputName = useRef()
+  const [isValidForm, setIsValidForm] = useState(true)
 
   const { postData } = useFetch(API_BASE_URL)
 
-  useEffect(() => {
-    refInputName.current.focus()
-  }, [])
+  const { lang } = useContext(AppContext)
 
   const handleNameOnChange = (event) => {
     setName(event.target.value)
+    setIsValidName(validateName(event.target.value))
   }
   const handleTelOnChange = (event) => {
     setTel(event.target.value)
+    setIsValidTel(validateTel(event.target.value))
   }
   const handleEmailOnChange = (event) => {
     setEmail(event.target.value)
+    setIsValidEmail(validateEmail(event.target.value))
   }
-  const handleConnectionOnChange = (event) => {
+  const handleConnectionChange = (event) => {
     setConnection(event.target.value)
+    setIsValidConnection(event.target.value ? true : false)
   }
   const handlePolicyOnChange = (event) => {
-    setIsPolicy(event.target.checked)
+    setIsPolicyChecked(event.target.checked)
   }
 
-  const validateName = (value) => {
-    if (value.length >= 2
-      && value.search(/[^a-z]+/gi) === -1) {
-      return 'success'
-    } else if (value.length === 0) {
-      return ''
-    } else {
-      return 'error'
-    }
-  }
-  const validateTel = (value) => {
-    if (value.length >= 10
-      && value.search(/[^0-9]+/gi) === -1) {
-      return 'success'
-    } else if (value.length === 0) {
-      return ''
-    } else {
-      return 'error'
-    }
-  }
-  const validateEmail = (value) => {
-    if (value.length >= 9
-      && value.search(/[a-z0-9\.]+@[a-z]{4,6}\.(ru|com|by)/gi) !== -1) {
-      return 'success'
-    } else if (value.length === 0) {
-      return ''
-    } else {
-      return 'error'
-    }
-  }
-  const validateForm = () => {
-    if (
-      validateName(name) === 'success' &&
-      validateTel(tel) === 'success' &&
-      validateEmail(email) === 'success' &&
-      connection && isPolicy
-    ) {
-      return false
-    }
-    return true
-  }
+  useEffect(() => {
+    setIsValidForm(
+      !(isValidName
+        && isValidTel
+        && isValidEmail
+        && isValidConnection)
+      && isPolicyChecked
+    )
+  }, [name, tel, email, connection, isPolicyChecked])
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
@@ -85,21 +62,30 @@ const Form = ({ parentClassName, form, onTitleChange }) => {
       tel,
       email,
       connection,
-      isPolicy,
+      isPolicy: isPolicyChecked,
       type: 'order',
       date: new Date().toLocaleString(),
     }
 
     console.log(order)
 
-    postData(`en/order.json`, order)
-      .catch(error => console.error(error))
+    postData(`${lang}/orders.json`, order)
+      .then((id) => console.log(id))
+      .then(() => {
+        setIsSubmitForm(true)
+        setIsValidForm(true)
+      })
+      .catch((error) => console.error(error))
 
-    onTitleChange()
+
     setName('')
+    setIsValidName(false)
     setTel('')
+    setIsValidTel(false)
     setEmail('')
+    setIsValidEmail(false)
     setConnection('')
+    setIsValidConnection(false)
   }
 
   return (
@@ -107,73 +93,41 @@ const Form = ({ parentClassName, form, onTitleChange }) => {
       className={`${parentClassName}__form`}
       onSubmit={handleFormSubmit}
     >
-      {form?.fields.length > 0 && (
-        form.fields.map(field => {
-          if (field.type === 'text') {
-            return (
-              <Input
-                parentClassName={`${parentClassName}__input ${validateName(name)}`}
-                field={field}
-                key={field.type}
-                refInputName={refInputName}
-                value={name}
-                handleOnChange={handleNameOnChange}
-              />
-            )
-          } else if (field.type === 'tel') {
-            return (
-              <Input
-                parentClassName={`${parentClassName}__input ${validateTel(tel)}`}
-                field={field}
-                key={field.type}
-                value={tel}
-                handleOnChange={handleTelOnChange}
-              />
-            )
-          } else {
-            return (
-              <Input
-                parentClassName={`${parentClassName}__input ${validateEmail(email)}`}
-                field={field}
-                key={field.type}
-                value={email}
-                handleOnChange={handleEmailOnChange}
-              />
-            )
-          }
-        })
-      )}
+      {form?.fields.length > 0 && form.fields.map(field =>
+        <Field
+          key={field.type}
 
-      <label
-        className={connection
-          ? `${parentClassName}__select success`
-          : `${parentClassName}__select`
-        }
-      >
-        <span>{form.connection.label}</span>
-        <select
-          value={connection}
-          onChange={handleConnectionOnChange}
-        >
-          <option></option>
-          {form?.connection.options.length && (
-            form.connection.options.map(option =>
-              <option
-                value={option.value}
-                key={option.value}
-              >
-                {option.text}
-              </option>
-            ))}
-        </select>
-      </label>
+          parentClassName={parentClassName}
+          details={field}
+
+          valueName={name}
+          isValidName={isValidName}
+          handleNameChange={handleNameOnChange}
+
+          valueTel={tel}
+          isValidTel={isValidTel}
+          handleTelChange={handleTelOnChange}
+
+          valueEmail={email}
+          isValidEmail={isValidEmail}
+          handleEmailChange={handleEmailOnChange}
+        />
+      )
+      }
+
+      <Connection
+        parentClassName={parentClassName}
+        details={form.connection}
+        valueConnection={connection}
+        handleConnectionChange={handleConnectionChange}
+      />
 
       <label
         className={`${parentClassName}__policy`}
       >
         <input
           type={form.policy.checkbox.type}
-          checked={isPolicy}
+          checked={isPolicyChecked}
           onChange={handlePolicyOnChange}
         />
         <a href={form.policy.linkPolicy.url}>
@@ -184,7 +138,7 @@ const Form = ({ parentClassName, form, onTitleChange }) => {
       <button
         className={`${parentClassName}__btn`}
         type='submit'
-        disabled={validateForm()}
+        disabled={isValidForm}
       >
         <span>
           {form.buttonText ? form.buttonText : 'Submit'}

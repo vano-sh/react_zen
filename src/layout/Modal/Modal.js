@@ -1,37 +1,36 @@
-import { useContext, useRef } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../AppContext'
 import clsx from 'clsx'
 import { ReactComponent as CloseIcon } from './assets/close_icon.svg'
 import Title from '../../components/Title'
 import Form from './components/Form'
+import Submit from './components/Submit/Submit'
+import useBodyHidden from '../../hooks/useBodyHidden'
 
 const Modal = ({ data }) => {
 
   const className = 'modal'
 
-  const refTitle = useRef(null)
+  const [isSubmitForm, setIsSubmitForm] = useState(false)
 
   const {
     isModalActive,
-    lang,
     setIsModalActive
   } = useContext(AppContext)
 
   const activeClass = clsx({ 'active': isModalActive })
 
+  useEffect(() => {
+    const idTimer = setTimeout(() => {
+      setIsModalActive(false)
+      setIsSubmitForm(false)
+    }, 2000)
+
+    return () => clearTimeout(idTimer)
+  }, [isSubmitForm])
+
   const handleModalCloseClick = () => {
     setIsModalActive(false)
-  }
-
-  const handleTitleChange = () => {
-    const prevTitleValue = refTitle.current.innerText
-    refTitle.current.innerText = (lang === 'en')
-      ? 'Submit!'
-      : 'Отправлено!'
-    setTimeout(() => {
-      setIsModalActive(false)
-      refTitle.current.innerText = prevTitleValue
-    }, 2000)
   }
 
   return (
@@ -46,21 +45,22 @@ const Modal = ({ data }) => {
           <CloseIcon />
         </button>
 
-        {data.title && (
+        {data?.title && (
           <Title
             parentClassName={className}
             title={data.title}
-            refTitle={refTitle}
           />
         )}
 
-        {data.form && (
+        {data?.form && (
           <Form
             parentClassName={className}
             form={data.form}
-            onTitleChange={handleTitleChange}
+            setIsSubmitForm={setIsSubmitForm}
           />
         )}
+
+        {isSubmitForm && <Submit parentClassName={className} />}
       </div>
     </div>
   )
