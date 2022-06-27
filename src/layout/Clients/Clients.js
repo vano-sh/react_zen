@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import Image from '../../components/Image'
 
 const Clients = ({ data }) => {
-  
+
   const className = 'clients'
 
   const { theme } = useContext(AppContext)
@@ -18,9 +18,9 @@ const Clients = ({ data }) => {
       data-name={data.name}
     >
       <div className={`${className}__wrapper`}>
-        {clients.length > 0 && clients.map(client => (
+        {clients.length > 0 && clients.map((client) =>
           <Image image={client} key={client.source} />
-        ))}
+        )}
       </div>
     </section>
   )

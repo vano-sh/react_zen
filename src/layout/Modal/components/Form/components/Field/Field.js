@@ -1,65 +1,73 @@
-import clsx from "clsx"
-import { validateName, validateTel, validateEmail } from '../../../../../../utils/helpers'
+import clsx from 'clsx'
 
 const Field = ({
+  type,
   parentClassName,
   details,
-  valueName,
+  name,
   isValidName,
-  handleNameChange,
-  valueTel,
+  onNameChange,
+  tel,
   isValidTel,
-  handleTelChange,
-  valueEmail,
+  onTelChange,
+  email,
   isValidEmail,
-  handleEmailChange
+  onEmailChange
 }) => {
 
-  const currentClassName = `${parentClassName}__input`
+  const currentClassName = parentClassName
+    ? `${parentClassName}__input`
+    : 'input'
 
-  const validNameClasses = clsx({
-    'success': validateName(valueName),
-    'error': valueName.length && !isValidName
+  const fieldNameClasses = clsx(currentClassName, {
+    'success': isValidName,
+    'error': name?.length && !isValidName
   })
 
-  const validTelClasses = clsx({
-    'success': validateTel(valueTel),
-    'error': valueTel.length && !isValidTel
-  })
-  const validEmailClasses = clsx({
-    'success': validateEmail(valueEmail),
-    'error': valueEmail.length && !isValidEmail
+  const fieldTelClasses = clsx(currentClassName, {
+    'success': isValidTel,
+    'error': tel?.length && !isValidTel
   })
 
+  const fieldEmailClasses = clsx(currentClassName, {
+    'success': isValidEmail,
+    'error': email?.length && !isValidEmail
+  })
 
-  switch (details.type) {
+  switch (type) {
     default: return (
-      <input
-        className={`${currentClassName} ${validNameClasses}`}
-        type={details.type}
-        placeholder={details.placeholder}
-        value={valueName}
-        onChange={handleNameChange}
-      />
+      <label className={fieldNameClasses}>
+        <input
+          type='text'
+          value={name}
+          placeholder={details.placeholder}
+          onChange={onNameChange}
+        />
+      </label>
     )
+
     case 'tel': return (
-      <input
-        className={`${currentClassName} ${validTelClasses}`}
-        type={details.type}
-        placeholder={details.placeholder}
-        value={valueTel}
-        onChange={handleTelChange}
-      />
+      <label className={fieldTelClasses}>
+        <input
+          type='tel'
+          value={tel}
+          placeholder={details.placeholder}
+          onChange={onTelChange}
+        />
+      </label>
     )
+
     case 'email': return (
-      <input
-        className={`${currentClassName} ${validEmailClasses}`}
-        type={details.type}
-        placeholder={details.placeholder}
-        value={valueEmail}
-        onChange={handleEmailChange}
-      />
+      <label className={fieldEmailClasses}>
+        <input
+          type='email'
+          value={email}
+          placeholder={details.placeholder}
+          onChange={onEmailChange}
+        />
+      </label>
     )
   }
 }
+
 export default Field

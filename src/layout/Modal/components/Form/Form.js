@@ -1,12 +1,27 @@
-import { useContext, useEffect, useRef, useState } from 'react'
 import { AppContext } from '../../../../AppContext'
+import { useContext, useState, useEffect } from 'react'
 import { API_BASE_URL } from '../../../../constans/api'
-import useFetch from '../../../../hooks/useFetch'
-import { validateEmail, validateName, validateTel } from '../../../../utils/helpers'
-import Connection from './components/Connection'
 import Field from './components/Field'
+import Connection from './components/Connection'
+import Policy from '../Policy'
+import useFetch from '../../../../hooks/useFetch'
+import {
+  validateName,
+  validateTel,
+  validateEmail
+} from '../../../../utils/helpers'
 
-const Form = ({ parentClassName, form, setIsSubmitForm }) => {
+const Form = ({ parentClassName, form }) => {
+
+  const { postData, isLoading } = useFetch(API_BASE_URL)
+
+  const {
+    lang,
+    isSuccessSubmit,
+    setIsSuccessSubmit,
+    isFormReset,
+    setIsFormReset
+  } = useContext(AppContext)
 
   const [name, setName] = useState('')
   const [isValidName, setIsValidName] = useState(false)
@@ -18,133 +33,143 @@ const Form = ({ parentClassName, form, setIsSubmitForm }) => {
   const [isValidConnection, setIsValidConnection] = useState(false)
   const [isPolicyChecked, setIsPolicyChecked] = useState(true)
 
-  const [isValidForm, setIsValidForm] = useState(true)
+  const isSubmitDisabled = !(
+    isValidName &&
+    isValidTel &&
+    isValidEmail &&
+    isValidConnection &&
+    isPolicyChecked
+  )
 
-  const { postData } = useFetch(API_BASE_URL)
+  const handleNameChange = (event) => {
+    const name = event.target.value
+    setName(name)
+    setIsValidName(validateName(name))
+  }
 
-  const { lang } = useContext(AppContext)
+  const handleTelChange = (event) => {
+    const tel = event.target.value
+    setTel(tel)
+    setIsValidTel(validateTel(tel))
+  }
 
-  const handleNameOnChange = (event) => {
-    setName(event.target.value)
-    setIsValidName(validateName(event.target.value))
+  const handleEmailChange = (event) => {
+    const email = event.target.value
+    setEmail(email)
+    setIsValidEmail(validateEmail(email))
   }
-  const handleTelOnChange = (event) => {
-    setTel(event.target.value)
-    setIsValidTel(validateTel(event.target.value))
-  }
-  const handleEmailOnChange = (event) => {
-    setEmail(event.target.value)
-    setIsValidEmail(validateEmail(event.target.value))
-  }
+
   const handleConnectionChange = (event) => {
-    setConnection(event.target.value)
-    setIsValidConnection(event.target.value ? true : false)
-  }
-  const handlePolicyOnChange = (event) => {
-    setIsPolicyChecked(event.target.checked)
+    const connection = event.target.value
+    setConnection(connection)
+
+    connection
+      ? setIsValidConnection(true)
+      : setIsValidConnection(false)
   }
 
-  useEffect(() => {
-    setIsValidForm(
-      !(isValidName
-        && isValidTel
-        && isValidEmail
-        && isValidConnection)
-      && isPolicyChecked
-    )
-  }, [name, tel, email, connection, isPolicyChecked])
+  const handlePolicyChange = () => {
+    setIsPolicyChecked(!isPolicyChecked)
+  }
 
   const handleFormSubmit = (event) => {
     event.preventDefault()
 
     const order = {
+      type: 'order',
+      date: new Date().toLocaleString(),
       name,
       tel,
       email,
       connection,
-      isPolicy: isPolicyChecked,
-      type: 'order',
-      date: new Date().toLocaleString(),
+      policy: isPolicyChecked
     }
 
-    console.log(order)
-
-    postData(`${lang}/orders.json`, order)
-      .then((id) => console.log(id))
-      .then(() => {
-        setIsSubmitForm(true)
-        setIsValidForm(true)
-      })
-      .catch((error) => console.error(error))
-
-
-    setName('')
-    setIsValidName(false)
-    setTel('')
-    setIsValidTel(false)
-    setEmail('')
-    setIsValidEmail(false)
-    setConnection('')
-    setIsValidConnection(false)
+    postData(`${lang}/orders.json`, order).then(
+      () => setIsSuccessSubmit(true),
+      (error) => console.error({ error })
+    )
   }
 
+  useEffect(() => {
+    if (isSuccessSubmit || isFormReset) {
+      setName('')
+      setIsValidName(false)
+      setTel('')
+      setIsValidTel(false)
+      setEmail('')
+      setIsValidEmail(false)
+      setConnection('')
+      setIsValidConnection(false)
+      setIsFormReset(false)
+    }
+  }, [isSuccessSubmit, isFormReset])
+
   return (
-    <form
-      className={`${parentClassName}__form`}
-      onSubmit={handleFormSubmit}
-    >
-      {form?.fields.length > 0 && form.fields.map(field =>
-        <Field
-          key={field.type}
-
-          parentClassName={parentClassName}
-          details={field}
-
-          valueName={name}
-          isValidName={isValidName}
-          handleNameChange={handleNameOnChange}
-
-          valueTel={tel}
-          isValidTel={isValidTel}
-          handleTelChange={handleTelOnChange}
-
-          valueEmail={email}
-          isValidEmail={isValidEmail}
-          handleEmailChange={handleEmailOnChange}
-        />
-      )
-      }
-
-      <Connection
-        parentClassName={parentClassName}
-        details={form.connection}
-        valueConnection={connection}
-        handleConnectionChange={handleConnectionChange}
-      />
-
-      <label
-        className={`${parentClassName}__policy`}
+    <>
+      <form
+        className={`${parentClassName}__form`}
+        onSubmit={handleFormSubmit}
       >
-        <input
-          type={form.policy.checkbox.type}
-          checked={isPolicyChecked}
-          onChange={handlePolicyOnChange}
-        />
-        <a href={form.policy.linkPolicy.url}>
-          {form.policy.linkPolicy.data}
-        </a>
-      </label>
+        {form?.fields.length > 0 && form.fields.map((field, index) => (
+          <Field
+            key={index}
+            type={field.type}
+            parentClassName={parentClassName}
+            details={field}
 
-      <button
-        className={`${parentClassName}__btn`}
-        type='submit'
-        disabled={isValidForm}
-      >
-        <span>
-          {form.buttonText ? form.buttonText : 'Submit'}
-        </span>
-      </button>
-    </form>
+            name={name}
+            isValidName={isValidName}
+            onNameChange={handleNameChange}
+
+            tel={tel}
+            isValidTel={isValidTel}
+            onTelChange={handleTelChange}
+
+            email={email}
+            isValidEmail={isValidEmail}
+            onEmailChange={handleEmailChange}
+          />
+        ))}
+
+        {form?.connection && (
+          <Connection
+            parentClassName={parentClassName}
+            details={form.connection}
+            connection={connection}
+            isValidConnection={isValidConnection}
+            onConnectionChange={handleConnectionChange}
+          />
+        )}
+
+        {form?.policy && (
+          <Policy
+            parentClassName={parentClassName}
+            policy={form.policy}
+            isPolicyChecked={isPolicyChecked}
+            onPolicyChange={handlePolicyChange}
+          />
+        )}
+
+        <button
+          className={`${parentClassName}__btn`}
+          type='submit'
+          disabled={isSubmitDisabled}
+        >
+          {form.buttonText}
+        </button>
+      </form>
+
+      {isLoading && (
+        <div className={`${parentClassName}__sending`}>
+          {
+            lang === 'en'
+              ? 'Sending...'
+              : 'Отправка...'
+          }
+        </div>
+      )}
+    </>
   )
 }
 

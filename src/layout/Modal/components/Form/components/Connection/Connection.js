@@ -1,34 +1,45 @@
+import clsx from 'clsx'
+
 const Connection = ({
   parentClassName,
   details,
-  valueConnection,
-  handleConnectionChange
+  connection,
+  isValidConnection,
+  onConnectionChange
 }) => {
 
-  const currentClassName = `${parentClassName}__select`
+  if (!Object.keys(details).length) return null
+
+  const { options } = details
+
+  const currentClassName = parentClassName
+    ? `${parentClassName}__select`
+    : 'select'
+
+  const connectionClasses = clsx(currentClassName, {
+    'success': isValidConnection
+  })
 
   return (
     <label
-      className={valueConnection
-        ? `${currentClassName} success`
-        : currentClassName
-      }
+      className={connectionClasses}
     >
-      {!valueConnection && <span>{details.label}</span>}
+      {!connection && <span>{details.label}</span>}
+
       <select
-        value={valueConnection}
-        onChange={handleConnectionChange}
+        value={connection}
+        onChange={onConnectionChange}
       >
         <option></option>
-        {details?.options.length > 0 && (
-          details.options.map(option =>
-            <option
-              value={option.value}
-              key={option.value}
-            >
-              {option.text}
-            </option>
-          ))}
+
+        {options?.length > 0 && options.map((option) => (
+          <option
+            key={option.value}
+            value={option.value}
+          >
+            {option.text}
+          </option>
+        ))}
       </select>
     </label>
   )

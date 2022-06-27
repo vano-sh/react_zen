@@ -12,7 +12,9 @@ const Info = ({ parentClassName, info }) => {
         </div>
         <div className={`${parentClassName}__copies`}>
           {info?.texts.length > 0 && info.texts.map((text) =>
-            <Text parentClassName={parentClassName} text={text} key={text} />
+            <Text key={text} parentClassName={parentClassName} >
+              {text}
+            </Text>
           )}
         </div>
       </div>

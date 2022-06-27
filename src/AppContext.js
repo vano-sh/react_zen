@@ -1,5 +1,4 @@
 import { createContext, useState } from 'react'
-import useBodyHidden from './hooks/useBodyHidden'
 
 const AppContext = createContext()
 
@@ -14,22 +13,21 @@ const AppProvider = ({ children }) => {
   })
   const [isBurgerActive, setIsBurgerActive] = useState(false)
   const [isModalActive, setIsModalActive] = useState(false)
-
-  useBodyHidden(isModalActive)
+  const [isSuccessSubmit, setIsSuccessSubmit] = useState(false)
+  const [isFormReset, setIsFormReset] = useState(false)
 
   const toogleTheme = () => {
     theme === 'light' ? setTheme('dark') : setTheme('light')
   }
 
   const value = {
-    isLoading,
-    setIsLoading,
+    isLoading, setIsLoading,
     lang, setLang,
     theme, toogleTheme,
-    isBurgerActive,
-    setIsBurgerActive,
-    isModalActive,
-    setIsModalActive,
+    isBurgerActive, setIsBurgerActive,
+    isModalActive, setIsModalActive,
+    isSuccessSubmit, setIsSuccessSubmit,
+    isFormReset, setIsFormReset
   }
 
   return (

@@ -5,7 +5,7 @@ import { ReactComponent as AppleIcon } from './assets/apple_icon.svg'
 import { ReactComponent as GoogleIcon } from './assets/google_icon.svg'
 
 const Download = ({ data }) => {
-  
+
   const className = 'download'
 
   return (
@@ -18,18 +18,18 @@ const Download = ({ data }) => {
           {data?.title && (
             <Title
               parentClassName={className}
-              title={data.title}
-            />
+              size={data.title.priority}
+            >
+              {data.title.data}
+            </Title>
           )}
-          {data?.texts.length > 0 && (data.texts.map(text =>
-            <Text
-              parentClassName={className}
-              text={text}
-              key={text}
-            />
-          ))}
+          {data?.texts.length > 0 && data.texts.map((text) =>
+            <Text key={text} parentClassName={className} >
+              {text}
+            </Text>
+          )}
           <div className={`${className}__links`}>
-            {data?.links.length > 0 && (data.links.map((link) =>
+            {data?.links.length > 0 && data.links.map((link) =>
               <a
                 className={`${className}__link`}
                 href={link.url}
@@ -40,7 +40,7 @@ const Download = ({ data }) => {
                   : <GoogleIcon />
                 }
               </a>
-            ))}
+            )}
           </div>
         </div>
         <div className={`${className}__image`}>

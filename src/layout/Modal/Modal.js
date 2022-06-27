@@ -1,68 +1,83 @@
-import { useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../AppContext'
-import clsx from 'clsx'
+import { useContext, useEffect } from 'react'
 import { ReactComponent as CloseIcon } from './assets/close_icon.svg'
 import Title from '../../components/Title'
 import Form from './components/Form'
-import Submit from './components/Submit/Submit'
+import clsx from 'clsx'
 import useBodyHidden from '../../hooks/useBodyHidden'
+import Success from './components/Success'
 
 const Modal = ({ data }) => {
 
-  const className = 'modal'
-
-  const [isSubmitForm, setIsSubmitForm] = useState(false)
-
   const {
     isModalActive,
-    setIsModalActive
+    setIsModalActive,
+    isSuccessSubmit,
+    setIsSuccessSubmit,
+    setIsFormReset,
+    lang
   } = useContext(AppContext)
 
-  const activeClass = clsx({ 'active': isModalActive })
+  const className = 'modal'
+
+  const successMessage = lang === 'en'
+    ? 'Order submit successfully!'
+    : 'Заказ успешно отправлен!'
+
+  useBodyHidden(isModalActive)
 
   useEffect(() => {
-    const idTimer = setTimeout(() => {
-      setIsModalActive(false)
-      setIsSubmitForm(false)
-    }, 2000)
+    if (isSuccessSubmit) {
+      const timerId = setTimeout(() => {
+        setIsModalActive(false)
+        setIsSuccessSubmit(false)
+      }, 2000)
+      return () => clearTimeout(timerId)
+    }
+  }, [isSuccessSubmit])
 
-    return () => clearTimeout(idTimer)
-  }, [isSubmitForm])
-
-  const handleModalCloseClick = () => {
+  const handleModalCloseButtonClick = () => {
     setIsModalActive(false)
+    setIsFormReset(true)
   }
 
+  const activeClassName = clsx({
+    'active': isModalActive
+  })
+
   return (
-    <div
-      className={`${className} ${activeClass}`}
-    >
+
+    <div className={`${className} ${activeClassName}`}>
       <div className={`${className}__body`}>
         <button
           className={`${className}__close`}
-          onClick={handleModalCloseClick}
+          onClick={handleModalCloseButtonClick}
         >
           <CloseIcon />
         </button>
 
         {data?.title && (
-          <Title
-            parentClassName={className}
-            title={data.title}
-          />
+          <Title parentClassName={className} >
+            {data.title.data}
+          </Title>
         )}
 
         {data?.form && (
           <Form
             parentClassName={className}
             form={data.form}
-            setIsSubmitForm={setIsSubmitForm}
           />
         )}
 
-        {isSubmitForm && <Submit parentClassName={className} />}
+        {isSuccessSubmit &&
+          <Success
+            parentClassName={className}
+          >
+            {successMessage}
+          </Success>
+        }
       </div>
-    </div>
+    </div >
   )
 }
 

@@ -16,14 +16,15 @@ const Care = ({ data }) => {
           {data?.title && (
             <Title
               parentClassName={className}
-              title={data.title} />
+              size={data.title.priority}
+            >
+              {data.title.data}
+            </Title>
           )}
-          {data?.texts.length > 0 && data.texts.map(text =>
-            <Text
-              parentClassName={className}
-              text={text}
-              key={text}
-            />
+          {data?.texts.length > 0 && data.texts.map((text) =>
+            <Text key={text} parentClassName={className} >
+              {text}
+            </Text>
           )}
         </div>
         <div className={`${className}__image`}>

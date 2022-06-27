@@ -12,28 +12,22 @@ const Warranty = ({ data }) => {
     >
       <div className={`${className}__wrapper`}>
         <div className={`${className}__body`}>
-          {data.title && (
+          {data?.title && (
             <Title
               parentClassName={className}
-              title={data.title}
-            />
+              size={data.title.priority}
+            >
+              {data.title.data}
+            </Title>
           )}
-          {data.texts.length > 0 && (
-            data.texts.map(text =>
-              <Text
-                parentClassName={className}
-                text={text}
-                key={text}
-              />
-            )
+          {data?.texts.length > 0 && data.texts.map((text) =>
+            <Text key={text} parentClassName={className} >
+              {text}
+            </Text>
           )}
         </div>
         <div className={`${className}__image`}>
-          {data.image && (
-            <Image
-              image={data.image}
-            />
-          )}
+          {data?.image && <Image image={data.image} />}
         </div>
       </div>
     </section>

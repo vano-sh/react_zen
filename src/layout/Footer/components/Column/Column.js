@@ -8,18 +8,20 @@ const Column = ({ parentClassName, column }) => {
       {column?.title && (
         <Title
           parentClassName={parentClassName}
-          title={column.title}
-        />
+          size={column.title.priority}
+        >
+          {column.title.data}
+        </Title>
       )}
 
       <ul className={`${parentClassName}__list`}>
-        {column?.links.length > 0 && column.links.map((link) => (
+        {column?.links.length > 0 && column.links.map((link) => 
           <ColumnItem
+            key={link.data}
             parentClassName={parentClassName}
             link={link}
-            key={link.data}
           />
-        ))}
+        )}
       </ul>
     </div>
   )

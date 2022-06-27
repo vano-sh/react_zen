@@ -1,4 +1,11 @@
+import { useRef } from 'react'
+import useAnimateRef from '../../../../../hooks/useAnimateRef'
+
 const ColumnItem = ({ parentClassName, link }) => {
+
+  const refItem = useRef(null)
+
+  useAnimateRef(refItem)
 
   const getTypeLink = (link) => {
     if (link.includes('.svg')
@@ -15,13 +22,13 @@ const ColumnItem = ({ parentClassName, link }) => {
   switch (getTypeLink(link.data)) {
     case 'email':
       return (
-        <li className={`${parentClassName}__item`}>
+        <li className={`${parentClassName}__item`} ref={refItem} >
           <a href={`mailto:${link.url}`}> {link.data} </a>
         </li>
       )
     case 'image':
       return (
-        <li className={`${parentClassName}__item`}>
+        <li className={`${parentClassName}__item`} ref={refItem} >
           <a href={link.url}>
             <img src={link.data} alt={link.data} />
           </a>
@@ -29,7 +36,7 @@ const ColumnItem = ({ parentClassName, link }) => {
       )
     default:
       return (
-        <li className={`${parentClassName}__item`}>
+        <li className={`${parentClassName}__item`} ref={refItem} >
           <a href={link.url}> {link.data} </a>
         </li>
       )
